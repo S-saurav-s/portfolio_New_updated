@@ -1,0 +1,132 @@
+<section class="admin-form-section">
+  <div class="container">
+    <div class="form-header">
+      <h1><%= title %></h1>
+      <a href="/admin/projects" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Projects
+      </a>
+    </div>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form 
+      action="<%= project ? '/admin/projects/' + project._id + '?_method=PUT' : '/admin/projects' %>" 
+      method="POST" 
+      enctype="multipart/form-data"
+      class="project-form"
+    >
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Project Title *</label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            value="<%= project ? project.title : '' %>"
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="order">Display Order</label>
+          <input 
+            type="number" 
+            id="order" 
+            name="order" 
+            value="<%= project ? project.order : 0 %>"
+            min="0"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          rows="5"
+          required
+        ><%= project ? project.description : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="technologies">Technologies (comma-separated)</label>
+        <input 
+          type="text" 
+          id="technologies" 
+          name="technologies" 
+          value="<%= project ? project.technologies.join(', ') : '' %>"
+          placeholder="e.g., Node.js, Express, MongoDB"
+        >
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="projectUrl">Live Project URL</label>
+          <input 
+            type="url" 
+            id="projectUrl" 
+            name="projectUrl" 
+            value="<%= project ? project.projectUrl : '' %>"
+            placeholder="https://your-project.com"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="githubUrl">GitHub URL</label>
+          <input 
+            type="url" 
+            id="githubUrl" 
+            name="githubUrl" 
+            value="<%= project ? project.githubUrl : '' %>"
+            placeholder="https://github.com/your-repo"
+          >
+        </div>
+      </div>
+
+          <div class="form-group">
+        <label for="image">Project Image</label>
+        
+        <% if (project && project.image && !project.image.includes('default_projectImage.png')) { %>
+          <div class="current-image">
+            <p>Current Image:</p>
+            <img src="<%= project.image %>" alt="Current project image" style="max-width: 200px;">
+            <small>Upload a new image to replace current one</small>
+          </div>
+        <% } else if (project && project.image && project.image.includes('default_projectImage.png')) { %>
+          <div class="current-image">
+            <p>No custom image uploaded yet</p>
+            <small>Upload an image to customize this project</small>
+          </div>
+        <% } %>
+        
+        <input 
+          type="file" 
+          id="image" 
+          name="image" 
+          accept="image/*"
+        >
+        <small>Accepted formats: JPEG, JPG, PNG, GIF, WEBP (Max 5MB)</small>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="featured" 
+          name="featured"
+          <%= project && project.featured ? 'checked' : '' %>
+        >
+        <label for="featured">Feature this project on homepage</label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <%= project ? 'Update Project' : 'Create Project' %>
+        </button>
+        <a href="/admin/projects" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>

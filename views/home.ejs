@@ -1,0 +1,119 @@
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Hi, I'm <span class="highlight"><%= settings.fullName %></span></h1>
+      <p class="hero-subtitle"><%= settings.title %></p>
+      <p class="hero-description">
+        <%= settings.tagline %>
+        <%= settings.description %>
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="/contact" class="btn btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (featuredProjects && featuredProjects.length > 0) { %>
+<section id="projects" class="projects-section">
+  <div class="container">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+      <% featuredProjects.forEach(project => { %>
+        <div class="project-card">
+          <img src="<%= project.image %>" alt="<%= project.title %>" class="project-image">
+          <div class="project-content">
+            <h3 class="project-title"><%= project.title %></h3>
+            <p class="project-description"><%= project.description.substring(0, 150) %>...</p>
+            <div class="project-tech">
+              <% project.technologies.slice(0, 4).forEach(tech => { %>
+                <span class="tech-tag"><%= tech %></span>
+              <% }) %>
+            </div>
+            <div class="project-links">
+              <% if (project.projectUrl) { %>
+                <a href="<%= project.projectUrl %>" target="_blank" class="btn-link">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+              <% } %>
+              <% if (project.githubUrl) { %>
+                <a href="<%= project.githubUrl %>" target="_blank" class="btn-link">
+                  <i class="fab fa-github"></i> Code
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<% if (allProjects && allProjects.length > 0) { %>
+<section class="all-projects-section">
+  <div class="container">
+    <h2 class="section-title">All Projects</h2>
+    <div class="projects-grid">
+      <% allProjects.forEach(project => { %>
+        <div class="project-card">
+          <img src="<%= project.image %>" alt="<%= project.title %>" class="project-image">
+          <div class="project-content">
+            <h3 class="project-title"><%= project.title %></h3>
+            <p class="project-description"><%= project.description.substring(0, 120) %>...</p>
+            <div class="project-tech">
+              <% project.technologies.slice(0, 3).forEach(tech => { %>
+                <span class="tech-tag"><%= tech %></span>
+              <% }) %>
+            </div>
+            <div class="project-links">
+              <% if (project.projectUrl) { %>
+                <a href="<%= project.projectUrl %>" target="_blank" class="btn-link">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+              <% } %>
+              <% if (project.githubUrl) { %>
+                <a href="<%= project.githubUrl %>" target="_blank" class="btn-link">
+                  <i class="fab fa-github"></i> Code
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="skills-section">
+  <div class="container">
+    <h2 class="section-title">Skills & Technologies</h2>
+    <div class="skills-grid">
+      <% if (settings.skills && settings.skills.length > 0) { %>
+        <% settings.skills.forEach(skill => { %>
+          <div class="skill-item">
+            <% if (skill.image) { %>
+              <img src="<%= skill.image %>" alt="<%= skill.name %>" class="skill-icon-img">
+            <% } else if (skill.icon) { %>
+              <i class="<%= skill.icon %>"></i>
+            <% } else { %>
+              <span class="skill-text-icon"><%= skill.name.charAt(0).toUpperCase() %></span>
+            <% } %>
+            <p><%= skill.name %></p>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="skill-item"><i class="fab fa-node-js"></i><p>Node.js</p></div>
+        <div class="skill-item"><i class="fab fa-js"></i><p>JavaScript</p></div>
+        <div class="skill-item"><i class="fab fa-react"></i><p>React</p></div>
+        <div class="skill-item"><i class="fas fa-database"></i><p>MongoDB</p></div>
+        <div class="skill-item"><i class="fab fa-html5"></i><p>HTML5</p></div>
+        <div class="skill-item"><i class="fab fa-css3-alt"></i><p>CSS3</p></div>
+        <div class="skill-item"><i class="fab fa-git-alt"></i><p>Git</p></div>
+        <div class="skill-item"><i class="fas fa-server"></i><p>Express</p></div>
+      <% } %>
+    </div>
+  </div>
+</section>

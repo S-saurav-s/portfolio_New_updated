@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-brand">
+      <a href="/">Shivam</a>
+    </div>
+    
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span class="hamburger"></span>
+    </button>
+    
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <% if (isAdmin) { %>
+        <li><a href="/admin/settings" class="btn-settings"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="/admin/projects" class="btn-admin">Admin Dashboard</a></li>
+        <li>
+          <form action="/auth/logout" method="POST" class="logout-form-nav">
+            <button type="submit" class="btn-logout">Logout</button>
+          </form>
+        </li>
+      <% } else { %>
+        <li><a href="/auth/login" class="btn-login">Login</a></li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

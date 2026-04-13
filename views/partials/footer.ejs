@@ -1,0 +1,16 @@
+<footer class="footer">
+  <div class="container">
+    <p>&copy; <%= new Date().getFullYear() %> <%= typeof settings !== 'undefined' ? settings.fullName : 'Shivam' %>. All rights reserved.</p>
+    <div class="social-links">
+      <% if (typeof settings !== 'undefined' && settings.socialLinks) { %>
+        <a href="<%= settings.socialLinks.github %>" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="<%= settings.socialLinks.linkedin %>" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="<%= settings.socialLinks.leetcode %>" target="_blank"><i class="fas fa-code"></i></a>
+      <% } else { %>
+        <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="#" target="_blank"><i class="fas fa-code"></i></a>
+      <% } %>
+    </div>
+  </div>
+</footer>

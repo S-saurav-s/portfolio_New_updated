@@ -1,0 +1,295 @@
+<section class="admin-settings-section">
+  <div class="container">
+    <div class="settings-header">
+      <h1><i class="fas fa-cog"></i> Site Settings</h1>
+      <a href="/admin/projects" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Projects
+      </a>
+    </div>
+
+    <% if (success_msg && success_msg.length > 0) { %>
+      <div class="alert alert-success"><%= success_msg %></div>
+    <% } %>
+    
+    <% if (error_msg && error_msg.length > 0) { %>
+      <div class="alert alert-error"><%= error_msg %></div>
+    <% } %>
+
+    <div class="settings-tabs">
+     <button class="tab-btn active" onclick="showTab(event, 'profile')">
+  <i class="fas fa-user"></i> Profile
+</button>
+<button class="tab-btn" onclick="showTab(event, 'social')">
+  <i class="fas fa-share-alt"></i> Social Links
+</button>
+<button class="tab-btn" onclick="showTab(event, 'skills')">
+  <i class="fas fa-code"></i> Skills
+</button>
+<button class="tab-btn" onclick="showTab(event, 'about')">
+  <i class="fas fa-info-circle"></i> About Section
+</button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="profile-tab" class="tab-content active">
+      <div class="settings-card">
+        <h2><i class="fas fa-user-edit"></i> Profile Information</h2>
+        <form action="/admin/settings/profile" method="POST" class="settings-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" value="<%= settings.fullName %>" required>
+            </div>
+            <div class="form-group">
+              <label for="title">Professional Title</label>
+              <input type="text" id="title" name="title" value="<%= settings.title %>" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tagline">Tagline</label>
+            <input type="text" id="tagline" name="tagline" value="<%= settings.tagline %>">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3"><%= settings.description %></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" value="<%= settings.email %>">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" id="phone" name="phone" value="<%= settings.phone %>">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" value="<%= settings.location %>">
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Update Profile
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Social Links Tab -->
+    <div id="social-tab" class="tab-content">
+      <div class="settings-card">
+        <h2><i class="fas fa-share-alt"></i> Social Media Links</h2>
+        <form action="/admin/settings/social" method="POST" class="settings-form">
+          <div class="form-group">
+            <label for="github">
+              <i class="fab fa-github"></i> GitHub URL
+            </label>
+            <input type="url" id="github" name="github" value="<%= settings.socialLinks.github %>" placeholder="https://github.com/yourusername">
+          </div>
+
+          <div class="form-group">
+            <label for="linkedin">
+              <i class="fab fa-linkedin"></i> LinkedIn URL
+            </label>
+            <input type="url" id="linkedin" name="linkedin" value="<%= settings.socialLinks.linkedin %>" placeholder="https://linkedin.com/in/yourusername">
+          </div>
+
+          <div class="form-group">
+            <label for="leetcode">
+              <i class="fas fa-code"></i> LeetCode URL
+            </label>
+            <input type="url" id="leetcode" name="leetcode" value="<%= settings.socialLinks.leetcode %>" placeholder="https://leetcode.com/yourusername">
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Update Social Links
+          </button>
+        </form>
+      </div>
+    </div>
+<!-- Skills Tab -->
+<div id="skills-tab" class="tab-content">
+  <div class="settings-card">
+    <h2><i class="fas fa-code"></i> Skills & Technologies</h2>
+    <p class="help-text">Enter skills separated by commas.</p>
+
+    <!-- ✅ MAIN FORM (ONLY for adding skills) -->
+    <form action="/admin/settings/skills" method="POST" class="settings-form">
+      <div class="form-group">
+        <label for="skillNames">Skills (comma-separated)</label>
+        <textarea id="skillNames" name="skillNames" rows="4"
+          placeholder="Enter NEW skills only (e.g., Node.js, React)"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Update Skills
+      </button>
+    </form>
+
+    <!-- ✅ SHOW SKILLS OUTSIDE FORM -->
+    <% if (settings.skills && settings.skills.length > 0) { %>
+      <div class="current-skills">
+        <h3>Current Skills:</h3>
+        <div class="skills-preview">
+
+          <% settings.skills.forEach(skill => { %>
+            <div class="skill-preview-item">
+
+              <% if (skill.image) { %>
+                <img src="<%= skill.image %>" alt="<%= skill.name %>" class="skill-icon-img">
+              <% } else { %>
+                <i class="<%= skill.icon %>"></i>
+              <% } %>
+
+              <span><%= skill.name %></span>
+
+              <!-- ✅ UPLOAD ICON FORM (FIXED) -->
+              <form action="/admin/settings/skills/upload/<%= skill._id %>" 
+                    method="POST" 
+                    enctype="multipart/form-data"
+                    class="upload-skill-icon-form">
+
+                <label for="skillIcon-<%= skill._id %>" class="upload-icon-btn">
+                  <i class="fas fa-camera"></i>
+                </label>
+
+                <input type="file"
+                       id="skillIcon-<%= skill._id %>"
+                       name="image"
+                       accept="image/*"
+                       onchange="this.form.submit()"
+                       style="display: none;">
+              </form>
+
+              <!-- ✅ DELETE SKILL BUTTON (NEW) -->
+             <!-- Delete button that opens modal -->
+<button type="button" class="delete-skill-btn" 
+        onclick="showDeleteSkillModal('<%= skill._id %>', '<%= skill.name.replace(/'/g, "\\'") %>')" 
+        title="Delete skill">
+  <i class="fas fa-trash"></i>
+</button>
+
+<!-- Hidden form for modal submission -->
+<form id="deleteSkillForm_<%= skill._id %>" 
+      action="/admin/settings/skills/<%= skill._id %>?_method=DELETE" 
+      method="POST" 
+      style="display: none;">
+</form>
+
+            </div>
+          <% }) %>
+
+        </div>
+      </div>
+    <% } %>
+
+  </div>
+</div>
+    <!-- Custom Delete Confirmation Modal for Skills -->
+<div id="deleteSkillModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <i class="fas fa-exclamation-triangle modal-icon"></i>
+      <h2>Delete Skill?</h2>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete <strong id="skillName"></strong>?</p>
+      <p class="warning-text">This action cannot be undone. The skill icon will also be deleted.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeDeleteSkillModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <form id="deleteSkillForm" method="POST" style="display: inline;">
+        <button type="submit" class="btn-confirm-delete">
+          <i class="fas fa-trash"></i> Yes, Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+    <!-- About Section Tab -->
+    <div id="about-tab" class="tab-content">
+      <div class="settings-card">
+        <h2><i class="fas fa-info-circle"></i> About Section</h2>
+        <form action="/admin/settings/about" method="POST" class="settings-form">
+          <div class="form-group">
+            <label for="aboutTitle">About Section Title</label>
+            <input type="text" id="aboutTitle" name="aboutTitle" value="<%= settings.aboutTitle %>">
+          </div>
+
+          <div class="form-group">
+            <label for="aboutDescription">About Description</label>
+            <textarea id="aboutDescription" name="aboutDescription" rows="5"><%= settings.aboutDescription %></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="whatIDo">What I Do (one item per line)</label>
+            <textarea id="whatIDo" name="whatIDo" rows="6" placeholder="Build responsive web applications&#10;Develop RESTful APIs&#10;Design database solutions"><%= settings.whatIDo.map(item => item.text).join('\n') %></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Update About Section
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function showTab(event,tabName) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  // Remove active class from all buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // Show selected tab
+  document.getElementById(tabName + '-tab').classList.add('active');
+  
+  // Add active class to clicked button
+  event.target.classList.add('active');
+}
+
+// Skill Delete Modal Functions
+function showDeleteSkillModal(skillId, skillName) {
+  const modal = document.getElementById('deleteSkillModal');
+  const nameElement = document.getElementById('skillName');
+  const deleteForm = document.getElementById('deleteSkillForm');
+  
+  nameElement.textContent = skillName;
+  deleteForm.action = `/admin/settings/skills/${skillId}?_method=DELETE`;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteSkillModal() {
+  const modal = document.getElementById('deleteSkillModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteSkillModal')?.addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDeleteSkillModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeDeleteSkillModal();
+  }
+});
+</script>
