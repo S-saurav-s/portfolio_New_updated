@@ -1,4 +1,4 @@
-# Shivam Portfolio Website
+# Saurav Portfolio Website
 
 A full-stack portfolio website built with Node.js, Express, MongoDB, and EJS with admin panel for managing projects.
 
@@ -21,7 +21,7 @@ A full-stack portfolio website built with Node.js, Express, MongoDB, and EJS wit
 
 ## Project Structure
 ```
-portfolio_shivam/
+portfolio_saurav/
 ├── config/           # Database configuration
 ├── controllers/      # Route controllers (auth, projects)
 ├── middleware/       # Authentication middleware
@@ -163,7 +163,7 @@ portfolio_shivam/
 MIT License
 
 ## Author
-Shivam
+Saurav
 
 ---
 
