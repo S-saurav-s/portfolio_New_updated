@@ -75,7 +75,7 @@ function sendMail(e) {
   const btn = document.querySelector("button");
   btn.innerText = "Sending...";
 
-  emailjs.send("6AVrZLltJnviJRxt4g78W", "template_8tbj05n", {
+  emailjs.send("service_yjnni7d", "template_8tbj05n", {
     name: document.getElementById("name").value,
     email: document.getElementById("email").value,
     subject: document.getElementById("subject").value,
