@@ -70,34 +70,34 @@ router.get('/contact', async (req, res) => {
 
 // @desc    Handle contact form submission
 // @route   POST /contact
-router.post('/contact', async (req, res) => {
-  try {
-    const { name, email, subject, message } = req.body;
+router.post('/contact', (req, res) => {
+  const { name, email, subject, message } = req.body;
 
-    const transporter = require("nodemailer").createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+  // ✅ respond immediately (NO buffering)
+  res.redirect('/contact?success=1');
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `Portfolio: ${subject}`,
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-    });
+  // send email in background
+  const transporter = require("nodemailer").createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
 
-    req.flash('success_msg', `Thank you ${name}! Your message has been sent.`);
-    res.redirect('/contact');
-
-  } catch (error) {
-    console.error(error);
-    req.flash('error_msg', 'Error sending message. Please try again.');
-    res.redirect('/contact');
-  }
+  transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    replyTo: email,
+    subject: `Portfolio: ${subject}`,
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  }, (err, info) => {
+    if (err) {
+      console.log("Mail error:", err);
+    } else {
+      console.log("Mail sent:", info.response);
+    }
+  });
 });
 
 module.exports = router;
