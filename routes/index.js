@@ -76,8 +76,29 @@ router.post('/contact', async (req, res) => {
     
     // You can add email sending logic here later
     // For now, just show success message
-    req.flash('success_msg', `Thank you ${name}! Your message has been received. I'll get back to you soon.`);
+router.post('/contact', async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+
+    const transporter = require("nodemailer").createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      replyTo: email,
+      subject: `Portfolio: ${subject}`,
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+    });
+
+    req.flash('success_msg', `Thank you ${name}! Your message has been sent.`);
     res.redirect('/contact');
+
   } catch (error) {
     console.error(error);
     req.flash('error_msg', 'Error sending message. Please try again.');
