@@ -73,12 +73,6 @@ router.get('/contact', async (req, res) => {
 router.post('/contact', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-    
-    // You can add email sending logic here later
-    // For now, just show success message
-router.post('/contact', async (req, res) => {
-  try {
-    const { name, email, subject, message } = req.body;
 
     const transporter = require("nodemailer").createTransport({
       service: "gmail",
