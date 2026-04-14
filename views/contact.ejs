@@ -2,12 +2,11 @@
   <div class="container">
     <h1 class="page-title">Get In Touch</h1>
 
-    <div id="msg"></div>
-
     <div class="contact-content">
       <div class="contact-info">
         <h2>Let's Work Together</h2>
         <p>Have a project in mind or want to discuss opportunities? Feel free to reach out!</p>
+
         <div class="contact-details">
           <div class="contact-item">
             <i class="fas fa-envelope"></i>
@@ -16,6 +15,7 @@
               <p><%= settings.email %></p>
             </div>
           </div>
+
           <div class="contact-item">
             <i class="fas fa-map-marker-alt"></i>
             <div>
@@ -23,6 +23,7 @@
               <p><%= settings.location %></p>
             </div>
           </div>
+
           <div class="contact-item">
             <i class="fas fa-phone"></i>
             <div>
@@ -33,7 +34,7 @@
         </div>
       </div>
 
-      <!-- ✅ UPDATED FORM -->
+      <!-- FORM -->
       <form class="contact-form" onsubmit="sendMail(event)">
         <div class="form-group">
           <label>Name</label>
@@ -61,12 +62,15 @@
   </div>
 </section>
 
-<!-- ✅ EmailJS Script -->
+<!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<!-- ✅ REQUIRED: SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 (function(){
-  emailjs.init("JLNScwIegSk426YfV"); // 🔴 replace
+  emailjs.init("JLNScwIegSk426YfV"); // your public key
 })();
 
 function sendMail(e) {
@@ -74,6 +78,7 @@ function sendMail(e) {
 
   const btn = e.target.querySelector("button");
   btn.innerText = "Sending...";
+  btn.disabled = true;
 
   emailjs.send("service_yjnni7d", "template_8tbj05n", {
     name: document.getElementById("name").value,
@@ -82,8 +87,11 @@ function sendMail(e) {
     message: document.getElementById("message").value
   })
   .then(() => {
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+
     Swal.fire({
-      title: "Success!",
+      title: "✅ Success!",
       text: "Message sent successfully",
       icon: "success",
       confirmButtonText: "OK"
@@ -92,8 +100,11 @@ function sendMail(e) {
     });
   })
   .catch((error) => {
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+
     Swal.fire({
-      title: "Error!",
+      title: "❌ Error!",
       text: "Failed to send message",
       icon: "error",
       confirmButtonText: "OK"
